@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useCookies } from '../data/AppContext';
 
 interface Record {
@@ -23,25 +23,8 @@ export const useGameLogic = () => {
     const [showNameInput, setShowNameInput] = useState<boolean>(false);
     const [timeIsUp, setTimeIsUp] = useState<boolean>(false);
 
-    const correctSound = new Audio('/sounds/correct.mp3');
-    const incorrectSound = new Audio('/sounds/incorrect.mp3');
-
-    useEffect(() => {
-        generateSequence();
-        const savedRecord = getCookie('mini-game-record');
-        if (savedRecord) {
-            setBestScores(savedRecord);
-        }
-    }, [getCookie]);
-
-    useEffect(() => {
-        if (timeLeft === 0) {
-            setCorrect(false);
-            setPlaying(true);
-            setTimeIsUp(true);
-            setShowNameInput(true);
-        }
-    }, [timeLeft]);
+    const correctSound = useMemo(() => new Audio('/sounds/correct.mp3'), []);
+    const incorrectSound = useMemo(() => new Audio('/sounds/incorrect.mp3'), []);
 
     const generateSequence = useCallback(() => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
@@ -51,6 +34,37 @@ export const useGameLogic = () => {
         }
         setSequence(newSequence);
     }, []);
+
+    const updateBestScores = useCallback((name: string, currentScore: number) => {
+        let newBestScores = [...bestScores, { name, score: currentScore }];
+        newBestScores.sort((a, b) => b.score - a.score);
+        newBestScores = newBestScores.slice(0, 10);
+        setBestScores(newBestScores);
+        setCookie('mini-game-record', newBestScores);
+    }, [bestScores, setCookie]);
+
+    const handleNameSubmit = useCallback(() => {
+        updateBestScores(name, score);
+        setNameSubmitted(true);
+        setShowNameInput(false);
+    }, [name, score, updateBestScores]);
+
+    useEffect(() => {
+        generateSequence();
+        const savedRecord = getCookie('mini-game-record');
+        if (savedRecord) {
+            setBestScores(savedRecord);
+        }
+    }, [getCookie, generateSequence]);
+
+    useEffect(() => {
+        if (timeLeft === 0) {
+            setCorrect(false);
+            setPlaying(true);
+            setTimeIsUp(true);
+            setShowNameInput(true);
+        }
+    }, [timeLeft]);
 
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
         const key = event.key.toUpperCase();
@@ -66,7 +80,7 @@ export const useGameLogic = () => {
         const expectedKey = sequence[userInput.length];
 
         if (key === expectedKey) {
-            setUserInput([...userInput, key]);
+            setUserInput((prevUserInput) => [...prevUserInput, key]);
             setCorrect(true);
             if (userInput.length + 1 === sequence.length) {
                 const newScore = timeLeft * round;
@@ -84,21 +98,7 @@ export const useGameLogic = () => {
             setShowNameInput(true);
             incorrectSound.play();
         }
-    }, [gameStarted, nameSubmitted, playing, sequence, userInput.length, timeLeft, round, score, initialTime, generateSequence, correctSound, incorrectSound]);
-
-    const updateBestScores = (name: string, currentScore: number) => {
-        let newBestScores = [...bestScores, { name, score: currentScore }];
-        newBestScores.sort((a, b) => b.score - a.score);
-        newBestScores = newBestScores.slice(0, 10);
-        setBestScores(newBestScores);
-        setCookie('mini-game-record', newBestScores);
-    };
-
-    const handleNameSubmit = () => {
-        updateBestScores(name, score);
-        setNameSubmitted(true);
-        setShowNameInput(false);
-    };
+    }, [gameStarted, nameSubmitted, playing, sequence, userInput.length, timeLeft, round, score, initialTime, generateSequence, correctSound, incorrectSound, handleNameSubmit]);
 
     useEffect(() => {
         function handleKeyPressWrapper(event: KeyboardEvent) {
@@ -128,7 +128,7 @@ export const useGameLogic = () => {
     const startGame = () => {
         setGameStarted(true);
         setTimeLeft(initialTime);
-        setNameSubmitted(false); 
+        setNameSubmitted(false);
         setTimeIsUp(false);
     };
 
@@ -168,4 +168,3 @@ export const useGameLogic = () => {
         timeIsUp,
     };
 };
-

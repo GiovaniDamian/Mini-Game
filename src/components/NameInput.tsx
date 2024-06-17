@@ -7,7 +7,7 @@ interface NameInputProps {
 
 export default function NameInput({ name, setName, handleNameSubmit, isVisible }: NameInputProps) {
     if (!isVisible) {
-        return null; // Retorna null se isVisible for falso para não renderizar o componente
+        return null; 
     }
 
     return (

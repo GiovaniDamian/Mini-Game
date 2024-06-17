@@ -8,7 +8,6 @@ describe('GameBoard Component', () => {
         const correct = false;
         render(<GameBoard sequence={sequence} userInput={userInput} correct={correct} />);
 
-        // Verifica se todos os elementos do tabuleiro do jogo são renderizados corretamente
         sequence.forEach((character) => {
             const element = screen.getByText(character);
             expect(element).toBeInTheDocument();
