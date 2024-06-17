@@ -1,3 +1,37 @@
+## 🚀 Mini-game em React
+
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/cdcaa6e9-7dae-4e20-a187-6aa39200dd6f"/></br>
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/253fa2dd-43ae-4ca3-9694-893b1326c469"/></br>
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/e80474e9-6517-415c-acfa-825256b8a77b"/></br>
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/c785e7ec-b5ff-4139-8303-cf2c497bdb8a"/></br>
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/1d43caf7-fc45-40f3-a068-4ce0e7b5de05"/></br>
+
+## Quando houver Ranking
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/97b98b48-f276-4f34-a491-763aa1d8d571"/></br>
+<img height="360em" src="https://github.com/GiovaniDamian/Mini-Game/assets/60575219/b78b9f8c-dbc4-46cc-ba38-5e009591631e"/>
+
+
+## 🔧 Instalação e Uso
+
+<ol>
+  <li>Clone o repositório:</li>
+  <code>git clone https://github.com/GiovaniDamian/Mini-Game.git</code>
+  <li>Compile o projeto:</li>
+  <code>npm i</code>
+  <li>Execute o aplicativo:</li>
+  <code>npm start</code>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
